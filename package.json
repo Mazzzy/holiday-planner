@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Mazzzy/holiday-planner/issues"
   },
-  "homepage": "https://github.com/Mazzzy/holiday-planner#readme"
+  "homepage": "https://github.com/Mazzzy/holiday-planner#readme",
+  "dependencies": {
+    "moment": "^2.29.1"
+  }
 }
