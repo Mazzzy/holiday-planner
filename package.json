@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/Mazzzy/holiday-planner#readme",
   "dependencies": {
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0"
   }
 }
