@@ -8,4 +8,5 @@ const input = {
 
 let holidayList = [...PublicHolidays['2020'],...PublicHolidays['2021']];
 const holidayPlanner = new HolidayPlanner({holidayList, dateFormat: 'DD.MM.YYYY', maxDuration: 50});
-console.log(holidayPlanner);
+const res = holidayPlanner.getHolidayDays(input);
+console.log(res);
