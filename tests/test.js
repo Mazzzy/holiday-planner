@@ -58,12 +58,32 @@ describe("Holiday Planner Tests", async () => {
     });
 
     it("If All the conditions are satisfied, it should return the number of days", async () => {
-        const holidayPlanner = new HolidayPlanner({ holidayList: ['1.1.2020', '6.1.2020'], dateFormat: 'DD.MM.YYYY', maxDuration: 50 });
+        const holidayPlanner = new HolidayPlanner({ holidayList: ['1.1.2021', '6.1.2021'], dateFormat: 'DD.MM.YYYY', maxDuration: 50 });
         const holidays = holidayPlanner.getHolidayDays({
-            startDate: '1.1.2020', 
-            endDate: '7.1.2020'
+            startDate: '1.1.2021', 
+            endDate: '7.1.2021'
         });
         expect(holidays.success).to.be.equal(true);
-        expect(holidays.message.totalHolidayPeriod).to.be.equal(5);
+        expect(holidays.message).to.be.equal(4);
+    });
+
+    it("If Both Start date and End Date are Sundays (To consider 2 sundays in lowest date range possible)", async () => {
+        const holidayPlanner = new HolidayPlanner({ holidayList: ['1.1.2021', '6.1.2021'], dateFormat: 'DD.MM.YYYY', maxDuration: 50 });
+        const holidays = holidayPlanner.getHolidayDays({
+            startDate: '3.1.2021', 
+            endDate: '10.1.2021'
+        });
+        expect(holidays.success).to.be.equal(true);
+        expect(holidays.message).to.be.equal(5);
+    });
+
+    it("If Invalid dates is provided in holiday list", async () => {
+        expect( () => {
+            new HolidayPlanner({
+                 holidayList: ['32.1.2021'], 
+                 dateFormat: 'DD.MM.YYYY', 
+                 maxDuration: 50 
+            })
+        }).to.throw();
     });
 });
