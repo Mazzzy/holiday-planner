@@ -33,10 +33,11 @@ class HolidayPlanner{
             }
         }
         if(!this.#validateIfDatesBelongToSameHolidayPeriod(startDate, endDate) && this.#validateDateRange(startDate, endDate)){
+            const holidays = this.#getHolidayList(startDate, endDate);
             return {
                 success: true,
-                message: this.#calculateHolidayPeriod(startDate, endDate),
-                holidays: this.#getHolidayList(startDate, endDate),
+                message: holidays.length,
+                holidays,
             }
         } else {
             return {
@@ -46,20 +47,10 @@ class HolidayPlanner{
         }
     }
 
-    #calculateHolidayPeriod(startDate, endDate){
-        let totalHolidayPeriod = endDate.diff(startDate,'days') + 1;
-        this.validHolidayList.forEach(element => {
-            if( element.isBetween(startDate, endDate,  null, '[]')){
-                totalHolidayPeriod -= 1;
-            }
-        });
-        return { totalHolidayPeriod };
-    }
-
     #getHolidayList(startDate, endDate){
         let holidays = []
         for (var m = startDate; m.diff(endDate, 'days') <= 0; m.add(1, 'days')) {
-            if(!this.#momentInArray(m)){
+            if((!this.#momentInArray(m)) && m.day()!=0){
                 holidays.push(m.format(this.dateFormat));
             }
         }
@@ -75,8 +66,11 @@ class HolidayPlanner{
     #validateAndHolidayList(){
         let modifiedHolidayList = [];
         for (let index = 0; index < this.holidayList.length; index++) {
-            const element = this.#parseDate(this.holidayList[index])
-            if(element.day()!=7){
+            const element = this.#parseDate(this.holidayList[index]);
+            if(!element.isValid()){
+                throw new Error(`Invalid Date Format. Please provide a valid date. Accepted Format: ${ this.dateFormat }`)
+            }
+            if(element.day()!=0){
                 modifiedHolidayList.push(element);
             }
         }
